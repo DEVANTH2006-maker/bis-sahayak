@@ -1,0 +1,162 @@
+[
+  {
+    "name": "National Test House (NTH) — Guwahati",
+    "address": "136, G.S. Road",
+    "city": "Guwahati",
+    "state": "Assam",
+    "phone": "+91-361-2334949",
+    "email": "nthguwahati@gov.in",
+    "categories": ["electrical", "textiles", "steel", "cement", "plastics"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "BIS Regional Laboratory — Delhi",
+    "address": "9, Bahadur Shah Zafar Marg, New Delhi",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "phone": "+91-11-23370124",
+    "email": "",
+    "categories": ["electrical", "electronic", "food", "toys", "textiles"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "Central Power Research Institute (CPRI)",
+    "address": "12, Thimmaiah Road, Bangalore",
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "phone": "+91-80-22249661",
+    "email": "",
+    "categories": ["electrical", "power", "transformers", "cables"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "Electronics Regional Test Laboratory (ERTL) — South",
+    "address": "38, Nelson Manickam Road, Chennai",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "phone": "+91-44-23741191",
+    "email": "",
+    "categories": ["electronic", "IT equipment", "telecom"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "Central Institute of Plastics Engineering & Technology (CIPET)",
+    "address": "T.V.K. Industrial Estate, Guindy, Chennai",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "phone": "+91-44-22254631",
+    "email": "",
+    "categories": ["plastics", "polymer", "packaging"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "National Metallurgical Laboratory (NML)",
+    "address": "Jamshedpur",
+    "city": "Jamshedpur",
+    "state": "Jharkhand",
+    "phone": "+91-657-2345085",
+    "email": "",
+    "categories": ["metals", "steel", "alloys"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "Shriram Institute for Industrial Research",
+    "address": "14, Satsang Vihar Marg, New Delhi",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "phone": "+91-11-26341707",
+    "email": "",
+    "categories": ["chemicals", "rubber", "plastics", "textiles"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "BIS Regional Laboratory — Kolkata",
+    "address": "5, Middleton Street, Kolkata",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "phone": "+91-33-22487427",
+    "email": "",
+    "categories": ["food", "textiles", "chemicals", "cement"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "BIS Regional Laboratory — Mumbai",
+    "address": "501, NDVI, Plot C-4, Bandra Kurla Complex, Mumbai",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "phone": "+91-22-26590215",
+    "email": "",
+    "categories": ["electrical", "food", "toys", "textiles", "metals"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "Central Leather Research Institute (CLRI)",
+    "address": "Adyar, Chennai",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "phone": "+91-44-24411070",
+    "email": "",
+    "categories": ["leather", "footwear", "textiles"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "Indian Oil Corporation R&D Centre",
+    "address": "Sector-13, Faridabad",
+    "city": "Faridabad",
+    "state": "Haryana",
+    "phone": "+91-129-2272810",
+    "email": "",
+    "categories": ["petroleum", "lubricants", "fuels"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "National Sugar Institute",
+    "address": "Kanpur",
+    "city": "Kanpur",
+    "state": "Uttar Pradesh",
+    "phone": "+91-512-2530331",
+    "email": "",
+    "categories": ["food", "sugar", "confectionery"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "National Physical Laboratory (NPL)",
+    "address": "CSIR Campus, Pusa, New Delhi",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "phone": "+91-11-45608414",
+    "email": "",
+    "categories": ["electrical", "electronic", "calibration", "metals"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "BIS Regional Laboratory — Hyderabad",
+    "address": "1-8-303/18, Ashok Nagar, Hyderabad",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "phone": "+91-40-27561293",
+    "email": "",
+    "categories": ["electrical", "food", "textiles", "cement"],
+    "accreditation": "NABL, BIS"
+  },
+  {
+    "name": "Regional Testing Centre — Pune",
+    "address": "Pimpri, Pune",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "phone": "+91-20-27140345",
+    "email": "",
+    "categories": ["automotive", "engineering", "metals"],
+    "accreditation": "NABL"
+  },
+  {
+    "name": "BIS Laboratory — Ahmedabad",
+    "address": "Opp. Paldi Tel Exchange, Ahmedabad",
+    "city": "Ahmedabad",
+    "state": "Gujarat",
+    "phone": "+91-79-26574146",
+    "email": "",
+    "categories": ["textiles", "chemicals", "plastics"],
+    "accreditation": "NABL, BIS"
+  }
+]

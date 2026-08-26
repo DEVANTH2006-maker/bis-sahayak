@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Next.js
+.next/
+frontend/.next/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment secrets
+.env
+backend/.env
+
+# Logs
+*.log
+*.log.err
+frontend/frontend.log
+backend/backend.log
+backend/backend.log.err
+
+# ChromaDB vector store (regeneratable)
+backend/chroma_db/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Freebuff internal
+.freebuff/
+
+# Temp files
+backend.pid
+UsersaneesAppDataLocalTempsidebar_gen.js
+gemini_result.json
+
+# Build artifacts
+*.tsbuildinfo

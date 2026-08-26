@@ -1,0 +1,205 @@
+"use client";
+
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { Source } from "@/lib/api";
+import SourceCitation from "./SourceCitation";
+
+interface MessageBubbleProps {
+  role: "user" | "assistant";
+  content: string;
+  sources?: Source[];
+  streaming?: boolean;
+  showSources?: boolean;
+  onRegenerate?: () => void;
+  onEdit?: (newContent: string) => void;
+}
+
+export default function MessageBubble({
+  role,
+  content,
+  sources,
+  streaming = false,
+  showSources = true,
+  onRegenerate,
+  onEdit,
+}: MessageBubbleProps) {
+  const isUser = role === "user";
+  const [copied, setCopied] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(content);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(isUser ? content : processedContent);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSaveEdit = () => {
+    if (onEdit) onEdit(editContent);
+    setIsEditing(false);
+  };
+
+  const now = new Date();
+  const timestamp = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const hasSources = sources && sources.length > 0 && !isUser;
+
+  // Bold IS codes in assistant responses (e.g., IS 302, IS 1417, IS 10500)
+  const formatISCodes = (text: string): string => {
+    if (isUser) return text;
+    // Match IS followed by digits (with optional Part/Section suffixes)
+    // Only bold if not already inside markdown bold (**...**)
+    return text.replace(/(?<!\*\*)\b(IS\s+\d+(?:\.\d+)?(?:\s+Part\s+\d+)?)\b(?!\*\*)/g, "**$1**");
+  };
+
+  const processedContent = isUser ? content : formatISCodes(content);
+
+  return (
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-6 ${isUser ? "animate-slide-in-right" : "animate-slide-in-left"} message-row`}>
+      <div className={`max-w-[75%] ${isUser ? "" : "w-full max-w-[75%]"}`}>
+        {/* Avatar + name for AI */}
+        {!isUser && (
+          <div className="flex items-center gap-2 mb-1.5 ml-1">
+            <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-[#3F3F46] flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-500 dark:text-[#A1A1AA]" aria-hidden="true">
+                <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <span className="text-xs font-medium text-gray-500 dark:text-[#A1A1AA]">
+              BIS Sahayak
+            </span>
+            {/* Verified seal for source-backed answers */}
+            {hasSources && showSources && !streaming && (
+              <div className="verified-seal" aria-label="Source-verified answer">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Verified
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Message content */}
+        {isEditing ? (
+          <div className="rounded-2xl px-4 py-3 bg-gray-100 dark:bg-[#2F2F2F]">
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full bg-white dark:bg-[#303030] border border-gray-300 dark:border-[#3F3F46] rounded-lg p-2 text-sm text-gray-800 dark:text-[#ECECEC] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              rows={4}
+              aria-label="Edit message"
+            />
+            <div className="flex gap-2 mt-2 justify-end">
+              <button onClick={() => setIsEditing(false)} className="px-3 py-1 text-xs text-gray-500 hover:text-gray-700 dark:text-[#A1A1AA] dark:hover:text-[#ECECEC] transition-colors">
+                Cancel
+              </button>
+              <button onClick={handleSaveEdit} className="px-3 py-1 text-xs bg-gray-200 dark:bg-[#3F3F46] text-gray-700 dark:text-[#ECECEC] rounded-lg hover:bg-gray-300 dark:hover:bg-[#52525B] transition-colors">
+                Save
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className={`rounded-2xl px-4 py-3 ${isUser ? "bg-gray-100 dark:bg-[#2F2F2F] text-gray-800 dark:text-[#ECECEC] rounded-br-md" : "text-gray-800 dark:text-[#ECECEC] rounded-bl-md"} ${streaming ? "streaming-cursor" : ""}`}>
+            <div className="prose prose-sm max-w-none">
+              <ReactMarkdown>{processedContent}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+
+        {/* Bottom row: timestamp + actions */}
+        <div className={`flex items-center gap-1 mt-1 ${isUser ? "justify-end mr-1" : "justify-start ml-1"}`}>
+          <span className="text-[10px] text-gray-400 dark:text-[#71717A]">
+            {timestamp}
+          </span>
+          
+          {/* Message actions (hover to reveal) */}
+          <div className="message-actions flex items-center gap-0.5">
+            {/* Copy button (AI messages) */}
+            {!isUser && !streaming && (
+              <button
+                onClick={handleCopy}
+                className={`copy-tooltip text-xs px-1.5 py-0.5 rounded transition-all duration-150 btn-press ${copied ? "text-green-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-[#ECECEC] hover:bg-gray-100 dark:hover:bg-[#3F3F46]"}`}
+                data-tooltip={copied ? "Copied!" : "Copy"}
+                aria-label="Copy response"
+              >
+                {copied ? (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                  </svg>
+                )}
+              </button>
+            )}
+
+            {/* Thumbs up (AI messages) */}
+            {!isUser && !streaming && (
+              <button
+                onClick={() => setFeedback(feedback === "up" ? null : "up")}
+                className={`feedback-btn text-xs px-1.5 py-0.5 rounded transition-all duration-150 ${feedback === "up" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-[#ECECEC] hover:bg-gray-100 dark:hover:bg-[#3F3F46]"}`}
+                aria-label="Thumbs up"
+                aria-pressed={feedback === "up"}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill={feedback === "up" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" />
+                </svg>
+              </button>
+            )}
+
+            {/* Thumbs down (AI messages) */}
+            {!isUser && !streaming && (
+              <button
+                onClick={() => setFeedback(feedback === "down" ? null : "down")}
+                className={`feedback-btn text-xs px-1.5 py-0.5 rounded transition-all duration-150 ${feedback === "down" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-[#ECECEC] hover:bg-gray-100 dark:hover:bg-[#3F3F46]"}`}
+                aria-label="Thumbs down"
+                aria-pressed={feedback === "down"}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill={feedback === "down" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-13h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17" />
+                </svg>
+              </button>
+            )}
+
+            {/* Regenerate (AI messages) */}
+            {!isUser && !streaming && onRegenerate && (
+              <button
+                onClick={onRegenerate}
+                className="text-xs px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-600 dark:hover:text-[#ECECEC] hover:bg-gray-100 dark:hover:bg-[#3F3F46] transition-all duration-150"
+                aria-label="Regenerate response">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M1 4v6h6M23 20v-6h-6" strokeLinecap="round" strokeLinejoin="round" /><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+            )}
+            {isUser && onEdit && !isEditing && (
+              <button onClick={() => setIsEditing(true)} className="text-xs px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-600 dark:hover:text-[#ECECEC] hover:bg-gray-100 dark:hover:bg-[#3F3F46] transition-all duration-150" aria-label="Edit message">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {hasSources && showSources && !streaming && (
+          <div className="mt-2 ml-1 animate-fade-in">
+            <div className="flex flex-wrap gap-1.5">
+              {sources!.map((src, i) => (<SourceCitation key={i} source={src} />))}
+            </div>
+          </div>
+        )}
+
+        {!hasSources && !isUser && showSources && !streaming && content && !content.includes("Sorry") && (
+          <div className="mt-2 ml-1">
+            <span className="text-[10px] text-gray-400 dark:text-[#71717A] italic">No exact match found in indexed standards</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
