@@ -1,4 +1,4 @@
-# BIS Mitra 🏛️
+# BIS Sahayak 🏛️
 
 **AI-Powered Intelligent Assistant for Indian Standards and BIS Services**
 
@@ -6,9 +6,9 @@
 
 ---
 
-## What is BIS Mitra?
+## What is BIS Sahayak?
 
-BIS Mitra is a Retrieval-Augmented Generation (RAG) chatbot that helps users navigate the complex landscape of Indian Standards (IS) and Bureau of Indian Standards (BIS) services. It answers questions, recommends applicable standards, guides through certification processes, explains hallmarking, and helps find testing labs — all with source-backed citations.
+BIS Sahayak is a Retrieval-Augmented Generation (RAG) chatbot that helps users navigate the complex landscape of Indian Standards (IS) and Bureau of Indian Standards (BIS) services. It answers questions, recommends applicable standards, guides through certification processes, explains hallmarking, and helps find testing labs — all with source-backed citations.
 
 ### Key Features
 
@@ -104,7 +104,7 @@ docker-compose up --build
 ## Project Structure
 
 ```
-bis-mitra/
+bis-sahayak/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py              # FastAPI entrypoint
