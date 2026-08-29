@@ -30,13 +30,8 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str = ""
     ANTHROPIC_MODEL: str = "claude-3-5-sonnet-20241022"
 
-    # --- Embeddings (free, local — no API key) ---
-    EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
-
-    # --- ChromaDB (free, local) ---
-    CHROMA_PERSIST_DIR: str = str(Path(__file__).resolve().parent.parent.parent / "chroma_db")
-    CHROMA_COLLECTION: str = "bis_standards"
-
+    # --- Gemini File Search ---
+    GEMINI_FILE_SEARCH_STORE: str = ""
     # --- RAG ---
     RAG_TOP_K: int = 5
     RAG_CHUNK_SIZE: int = 600
