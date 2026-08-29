@@ -19,8 +19,6 @@ COPY . .
 
 # Create data directories
 RUN mkdir -p data/standards data/schemes chroma_db
-# Ingest BIS standards into ChromaDB
-RUN python -m scripts.ingest
 
 EXPOSE 8000
 
