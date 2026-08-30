@@ -2,7 +2,7 @@
  * API client — typed functions for every backend endpoint.
  */
 
-const API_BASE = "/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://bis-sahayak-wv1q.onrender.com/api";
 
 export interface Source {
   document: string;

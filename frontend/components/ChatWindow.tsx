@@ -1,5 +1,5 @@
 "use client";
-
+import { sendChatMessage } from "@/lib/api";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { ChatMode, Source } from "@/lib/api";
 import MessageBubble from "./MessageBubble";
@@ -120,7 +120,7 @@ export default function ChatWindow() {
         setDarkMode(true);
         document.documentElement.classList.add("dark");
       }
-    } catch {}
+    } catch { }
   }, []);
 
   useEffect(() => {
@@ -213,14 +213,7 @@ export default function ChatWindow() {
       if (inputRef.current) inputRef.current.style.height = "auto";
 
       try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, language, mode: activeMode }),
-        });
-
-        if (!res.ok) throw new Error(`Chat API error: ${res.status}`);
-        const data = await res.json();
+        const data = await sendChatMessage(text, language, activeMode);
 
         const assistantMsg: Message = {
           role: "assistant",
@@ -370,11 +363,10 @@ export default function ChatWindow() {
                     <button
                       key={tab.mode}
                       onClick={() => { setMode(tab.mode); setToolsOpen(false); }}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left ${
-                        mode === tab.mode
-                          ? "bg-gray-100 dark:bg-[#303030] text-gray-900 dark:text-[#ECECEC] font-medium"
-                          : "text-gray-600 dark:text-[#A1A1AA] hover:bg-gray-50 dark:hover:bg-[#303030]"
-                      }`}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left ${mode === tab.mode
+                        ? "bg-gray-100 dark:bg-[#303030] text-gray-900 dark:text-[#ECECEC] font-medium"
+                        : "text-gray-600 dark:text-[#A1A1AA] hover:bg-gray-50 dark:hover:bg-[#303030]"
+                        }`}
                     >
                       <span>{tab.icon}</span>
                       {tab.label}
