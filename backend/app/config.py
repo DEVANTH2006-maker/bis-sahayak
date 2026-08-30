@@ -38,7 +38,10 @@ class Settings(BaseSettings):
     RAG_CHUNK_OVERLAP: int = 100
 
     # --- App ---
-    CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    CORS_ORIGINS: list[str] = [
+    "http://localhost:3000",
+    "https://bis-sahayak-9fc3hk06z-devanth2006-makers-projects.vercel.app"
+]
     DEBUG: bool = True
 
     model_config = {"env_file": ".env", "extra": "ignore"}
