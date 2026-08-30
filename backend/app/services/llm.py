@@ -21,22 +21,36 @@ def _ollama_complete(system_prompt: str, user_prompt: str, max_tokens: int, temp
     return resp.json()["message"]["content"]
 
 
-def _gemini_complete(system_prompt: str, user_prompt: str, max_tokens: int, temperature: float) -> str:
-    settings = get_settings()
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent?key={settings.GEMINI_API_KEY}"
-    payload = {
-        "contents": [{"parts": [{"text": f"{system_prompt}\n\n{user_prompt}"}]}],
-        "generationConfig": {
-            "maxOutputTokens": max_tokens,
-            "temperature": temperature,
-        },
-        "systemInstruction": {"parts": [{"text": system_prompt}]},
-    }
-    resp = httpx.post(url, json=payload, timeout=60.0)
-    resp.raise_for_status()
-    data = resp.json()
-    return data["candidates"][0]["content"]["parts"][0]["text"]
+def _gemini_complete(
+    system_prompt: str,
+    user_prompt: str,
+    max_tokens: int,
+    temperature: float
+) -> str:
+    from google import genai
+    from google.genai import types
 
+    settings = get_settings()
+
+    client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+    response = client.models.generate_content(
+        model=settings.GEMINI_MODEL,
+        contents=user_prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=system_prompt,
+            max_output_tokens=max(max_tokens, 256),
+            temperature=temperature,
+        ),
+    )
+
+    if response.text:
+        return response.text
+
+    raise ValueError(
+        f"Gemini returned no text response. Finish reason: "
+        f"{response.candidates[0].finish_reason if response.candidates else 'unknown'}"
+    )
 
 def _openai_complete(system_prompt: str, user_prompt: str, max_tokens: int, temperature: float) -> str:
     from openai import OpenAI
