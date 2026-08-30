@@ -30,6 +30,13 @@ app.include_router(chat.router)
 app.include_router(standards.router)
 app.include_router(labs.router)
 
+@app.get("/debug-cors")
+async def debug_cors():
+    return {
+        "cors_origins": settings.CORS_ORIGINS,
+        "provider": settings.LLM_PROVIDER,
+        "store": settings.GEMINI_FILE_SEARCH_STORE,
+    }
 
 @app.get("/")
 async def root():
